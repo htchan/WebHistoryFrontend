@@ -65,15 +65,15 @@ class WebsiteCard extends StatelessWidget {
       )
     );
   }
-  List<Widget> renderActions(BuildContext context) {
-    IconSlideAction action;
+  ActionPane renderActions(BuildContext context) {
+    SlidableAction action;
     if (group.webs.length > 1) {
       // details page will be shown when there are more than one web in group
-      action = IconSlideAction(
-        caption: "Details",
-        color: Colors.blue,
+      action = SlidableAction(
+        label: "Details",
+        backgroundColor: Colors.blue,
         icon: Icons.info,
-        onTap: () {
+        onPressed: (_) {
           Navigator.pushNamed(
             context,
             '/details?groupName=${web.groupName}'
@@ -83,11 +83,11 @@ class WebsiteCard extends StatelessWidget {
       );
     } else {
       // change group name popup will be shown when there are one web in group
-      action = IconSlideAction(
-        caption: "Change Group",
-        color: Colors.yellow,
+      action = SlidableAction(
+        label: "Change Group",
+        backgroundColor: Colors.yellow,
         icon: Icons.edit,
-        onTap: () {
+        onPressed: (_) {
           print("working");
           // // show a dialog for input / select new group name (default group is user )
           showChangeGroupDialog(context);
@@ -96,25 +96,27 @@ class WebsiteCard extends StatelessWidget {
         }
       );
     }
-    return [
-      action,
-      IconSlideAction(
-        caption: 'Delete',
-        color: Colors.red,
-        icon: Icons.delete,
-        onTap: () {
-          group.webs.forEach((web) { client.delete(web.uuid); });
-          updateList();
-        }
-      )
-    ];
+    return ActionPane(
+      motion: ScrollMotion(), 
+      children:[
+        action,
+        SlidableAction(
+          label: 'Delete',
+          backgroundColor: Colors.red,
+          icon: Icons.delete,
+          onPressed: (_) {
+            group.webs.forEach((web) { client.delete(web.uuid); });
+            updateList();
+          }
+        )
+      ]
+    );
   }
 
   @override
   Widget build(BuildContext context) {
     return Slidable(
-      actionPane: SlidableDrawerActionPane(),
-      actionExtentRatio:0.2,
+      // actionExtentRatio:0.2,
       child: GestureDetector(
         onTap: openURL,
         child:ListTile(
@@ -123,8 +125,8 @@ class WebsiteCard extends StatelessWidget {
           subtitle: renderSubTitleText(),
         ),
       ),
-      actions: renderActions(context),
-      secondaryActions: renderActions(context),
+      startActionPane: renderActions(context),
+      endActionPane: renderActions(context),
     );
   }
 }

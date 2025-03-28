@@ -41,12 +41,12 @@ dependencies:
   flutter_dotenv: ^5.0.2
   collection: ^1.15.0
   intl: ^0.18.1
+  flutter_slidable: ^4.0.0
 
  
 dev_dependencies:
   flutter_test:
     sdk: flutter
-  flutter_slidable:
 
   # The "flutter_lints" package below contains a set of recommended lints to
   # encourage good coding practices. The lint set provided by the package is
